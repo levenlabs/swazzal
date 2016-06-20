@@ -8,7 +8,9 @@
   },
   "scripts": {
     "build": "babel src --presets es2015-loose --plugins transform-es3-member-expression-literals,transform-es3-property-literals --out-dir lib",
-    "test": "karma start --single-run --browsers PhantomJS"
+    "prepublish": "npm run build",
+    "test": "karma start --single-run --browsers PhantomJS",
+    "testwatch": "karma start --browsers PhantomJS"
   },
   "main": "lib/index.js",
   "devDependencies": {

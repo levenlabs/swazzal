@@ -69,10 +69,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-      'Chrome_hidden',
-      'PhantomJS',
-      'bs_firefox_mac',
-      'bs_ie6', 'bs_ie7', 'bs_ie8', 'bs_ie9'
+      'PhantomJS'
     ],
 
     customLaunchers: {
@@ -86,6 +83,12 @@ module.exports = function(config) {
       bs_firefox_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
+        os: 'OS X',
+        os_version: 'El Capitan'
+      },
+      bs_chrome_mac: {
+        base: 'BrowserStack',
+        browser: 'chrome',
         os: 'OS X',
         os_version: 'El Capitan'
       },
@@ -121,7 +124,8 @@ module.exports = function(config) {
 
     phantomjsLauncher: {
       // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
-      exitOnResourceError: true
+      // todo: we cannot set this to true without phantomjs crashing see: https://github.com/karma-runner/karma-phantomjs-launcher/issues/125
+      exitOnResourceError: false
     },
 
     browserStack: require('./bs_settings.json'),
