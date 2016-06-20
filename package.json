@@ -1,0 +1,42 @@
+{
+  "name": "swazzal",
+  "version": "0.1.0",
+  "description": "Rules engine for detecting and matching elements",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/levenlabs/swazzal.git"
+  },
+  "scripts": {
+    "build": "babel src --presets es2015-loose --plugins transform-es3-member-expression-literals,transform-es3-property-literals --out-dir lib",
+    "test": "karma start --single-run --browsers PhantomJS"
+  },
+  "main": "lib/index.js",
+  "devDependencies": {
+    "assertive-chai": "^2.0.2",
+    "babel-cli": "^6.10.1",
+    "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
+    "babel-plugin-transform-es3-property-literals": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "chai": "^3.5.0",
+    "jsdom": "^9.2.1",
+    "karma": "^0.13.22",
+    "karma-browserstack-launcher": "^1.0.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-mocha": "^1.0.1",
+    "karma-mocha-reporter": "^2.0.4",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.7.0",
+    "karma-webpack-with-fast-source-maps": "^1.9.2",
+    "mocha": "^2.5.3",
+    "phantomjs-prebuilt": "^2.1.7",
+    "promise-polyfill": "^5.2.1"
+  },
+  "dependencies": {
+    "array-unique": "^0.2.1"
+  },
+  "license": "MIT",
+  "author": "Leven Labs"
+}
