@@ -16,6 +16,7 @@
   "devDependencies": {
     "assertive-chai": "^2.0.2",
     "babel-cli": "^6.10.1",
+    "babel-loader": "^6.2.4",
     "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
     "babel-plugin-transform-es3-property-literals": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
