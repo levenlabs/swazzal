@@ -1,4 +1,11 @@
 var webpack = require('webpack');
+var bsSettings = {};
+try {
+  bsSettings = require('./bs_settings.json');
+} catch (e) {
+  console.log('Error loading bs_settings.json file:', e);
+}
+
 
 module.exports = function(config) {
   config.set({
@@ -128,7 +135,7 @@ module.exports = function(config) {
       exitOnResourceError: false
     },
 
-    browserStack: require('./bs_settings.json'),
+    browserStack: bsSettings,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
