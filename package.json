@@ -37,6 +37,7 @@
   "dependencies": {
     "array-unique": "^0.2.1"
   },
+  "readme": "README.md",
   "license": "MIT",
   "author": "Leven Labs"
 }
