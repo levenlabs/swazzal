@@ -193,11 +193,36 @@ describe('Rule', function() {
     });
 
     it('cl=foo;tag=div should match only divs with a class=foo', function () {
-      const el = makeElement('<div class="foo"></div><span class="foo"></div><p class="foo"></div>');
+      const el = makeElement('<div class="foo"></div><span class="foo"></span><p class="foo"></p>');
       const i = new Identifier('cl', 'foo');
       const i2 = new Identifier('tag', 'div');
       const r = new Rule([i, i2]);
       assert.deepEqual(r.locateElements(document), [el]);
+    });
+
+  });
+
+  describe('locateAllElements()', function () {
+
+    it('cl=foo should match ALL divs with a class=foo', function () {
+      const el = makeElement('<div class="foo"><div class="foo"><div class="foo"></div></div></div><div class="foo"></div>');
+      const i = new Identifier('cl', 'foo');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateAllElements(document), [el, el.firstChild, el.firstChild.firstChild, el.nextSibling]);
+    });
+
+    it('ppid=foo should match ALL children under a parent with id=foo', function () {
+      const el = makeElement('<div id="foo"><div><div></div></div></div>');
+      const i = new Identifier('ppid', 'foo');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateAllElements(document), [el.firstChild, el.firstChild.firstChild]);
+    });
+
+    it('pid=foo should match ALL siblings under a parent with id=foo', function () {
+      const el = makeElement('<div id="foo"><div></div><div></div></div>');
+      const i = new Identifier('pid', 'foo');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateAllElements(document), [el.firstChild, el.firstChild.nextSibling]);
     });
 
   });

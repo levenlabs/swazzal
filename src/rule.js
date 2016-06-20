@@ -1,6 +1,48 @@
 import unique from 'array-unique';
 import reduceParents from './reduceParents';
 
+function locateElements(rule, parent, includeAll) {
+  const roots = rule.locateRoots(parent);
+  const matchChildren = (children) => {
+    if (!children) {
+      return [];
+    }
+    const matches = [];
+    for (let i = 0; i < children.length; i++) {
+      // if its not an element, skip it
+      // apparently children includes nodes in <IE9
+      if (children[i].nodeType !== 1) {
+        continue;
+      }
+      // if this child matches don't search it's children
+      // unless includeAll is true
+      if (rule.match(children[i])) {
+        matches.push(children[i]);
+        if (!includeAll) {
+          continue;
+        }
+      }
+      // search the children for matches
+      matches.push(...matchChildren(children[i].children));
+    }
+    return matches;
+  };
+
+  // first we loop over the roots
+  return unique(roots.reduce((els, root) => {
+    const rootMatch = rule.match(root);
+    if (rootMatch) {
+      els.push(root);
+    }
+    // if the root matches don't search the children
+    // unless includeAll is true
+    if (!rootMatch || includeAll) {
+      els.push(...matchChildren(root.children));
+    }
+    return els;
+  }, []));
+}
+
 export default class Rule {
   constructor(identifiers) {
     this.identifiers = identifiers || [];
@@ -33,40 +75,12 @@ export default class Rule {
   }
 
   // Note: this ONLY returns the highest parent match
-  // todo: make a locateAllElements which gets all
   locateElements(parent) {
-    const roots = this.locateRoots(parent);
-    const matchChildren = (children) => {
-      if (!children) {
-        return [];
-      }
-      const matches = [];
-      for (let i = 0; i < children.length; i++) {
-        // if its not an element, skip it
-        // apparently children includes nodes in <IE9
-        if (children[i].nodeType !== 1) {
-          continue;
-        }
-        // if this child matches don't search it's children
-        if (this.match(children[i])) {
-          matches.push(children[i]);
-          continue;
-        }
-        // search the children for matches
-        matches.push(...matchChildren(children[i].children));
-      }
-      return matches;
-    };
+    return locateElements(this, parent, false);
+  }
 
-    // first we loop over the roots
-    return unique(roots.reduce((els, root) => {
-      // if the root matches don't search the children
-      if (this.match(root)) {
-        els.push(root);
-      } else {
-        els.push(...matchChildren(root.children));
-      }
-      return els;
-    }, []));
+  // Note: this returns ALL elements that match
+  locateAllElements(parent) {
+    return locateElements(this, parent, true);
   }
 }
