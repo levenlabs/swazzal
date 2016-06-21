@@ -78,7 +78,8 @@ module.exports = function(config) {
     browsers: [
       'PhantomJS',
       'bs_firefox_mac', 'bs_chrome_mac',
-      'bs_ie6', 'bs_ie7', 'bs_ie8', 'bs_ie9'
+      'bs_ie6', 'bs_ie7', 'bs_ie8', 'bs_ie9', 'bs_ie10', 'bs_ie11',
+      'bs_safari62', 'bs_safari71', 'bs_safari8', 'bs_safari91'
     ],
 
     customLaunchers: {
@@ -128,6 +129,48 @@ module.exports = function(config) {
         browser_version: '9.0',
         os: 'Windows',
         os_version: '7'
+      },
+      bs_ie10: {
+        base: 'BrowserStack',
+        browser: 'IE',
+        browser_version: '10.0',
+        os: 'Windows',
+        os_version: '8'
+      },
+      bs_ie11: {
+        base: 'BrowserStack',
+        browser: 'IE',
+        browser_version: '11.0',
+        os: 'Windows',
+        os_version: '10'
+      },
+      bs_safari91: {
+        base: 'BrowserStack',
+        browser: 'Safari',
+        browser_version: '9.1',
+        os: 'OS X',
+        os_version: 'El Capitan'
+      },
+      bs_safari8: {
+        base: 'BrowserStack',
+        browser: 'Safari',
+        browser_version: '8.0',
+        os: 'OS X',
+        os_version: 'Yosemite'
+      },
+      bs_safari71: {
+        base: 'BrowserStack',
+        browser: 'Safari',
+        browser_version: '7.1',
+        os: 'OS X',
+        os_version: 'Mavericks'
+      },
+      bs_safari62: {
+        base: 'BrowserStack',
+        browser: 'Safari',
+        browser_version: '6.2',
+        os: 'OS X',
+        os_version: 'Mountain Lion'
       }
     },
 
