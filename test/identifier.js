@@ -242,6 +242,18 @@ describe('Identifier', function() {
         assert.isTrue(i.match(p));
       });
 
+      it('cl=foo should match an element with class "foo bar"', function () {
+        const i = new Identifier('cl', 'foo');
+        const p = makeElement('<p class="foo bar"></p>');
+        assert.isTrue(i.match(p));
+      });
+
+      it('cl=foo should match an element with class "bar foo"', function () {
+        const i = new Identifier('cl', 'foo');
+        const p = makeElement('<p class="bar foo"></p>');
+        assert.isTrue(i.match(p));
+      });
+
       it('id=foo should not match an element with id "foo"', function () {
         const i = new Identifier('cl', 'foo');
         const p = makeElement('<p id="foo"></p>');
@@ -257,6 +269,12 @@ describe('Identifier', function() {
       it('cl=~foo should match an element with class "foobar"', function () {
         const i = new Identifier('cl', '~foo');
         const p = makeElement('<p class="foobar"></p>');
+        assert.isTrue(i.match(p));
+      });
+
+      it('cl=~foo should match an element with class "foo bar"', function () {
+        const i = new Identifier('cl', '~foo');
+        const p = makeElement('<p class="foo bar"></p>');
         assert.isTrue(i.match(p));
       });
 
@@ -409,10 +427,40 @@ describe('Identifier', function() {
 
     describe('src', function () {
 
-      it.skip('src=/foo should match an element with a src of "/foo"', function () {
+      it('src=/foo should match an element with a src of "/foo"', function () {
         const i = new Identifier('src', '/foo');
         const iframe = makeElement('<iframe src="/foo"></iframe>');
         assert.isTrue(i.match(iframe));
+      });
+
+      it('src=/foo should match an element with a src of "//localhost/foo"', function () {
+        const i = new Identifier('src', '/foo');
+        const iframe = makeElement('<iframe src="//localhost/foo"></iframe>');
+        assert.isTrue(i.match(iframe));
+      });
+
+
+      it('src=/foo should match an element with a src of "http://localhost/foo"', function () {
+        const i = new Identifier('src', '/foo');
+        const iframe = makeElement('<iframe src="http://localhost/foo"></iframe>');
+        assert.isTrue(i.match(iframe));
+      });
+      it('src=/foo should not match an element with a src of "/bar/foo"', function () {
+        const i = new Identifier('src', '/foo');
+        const iframe = makeElement('<iframe src="/bar/foo"></iframe>');
+        assert.isFalse(i.match(iframe));
+      });
+
+      it('src=/foo should match an element with a src of "/foo?bar"', function () {
+        const i = new Identifier('src', '/foo');
+        const iframe = makeElement('<iframe src="/foo?bar"></iframe>');
+        assert.isTrue(i.match(iframe));
+      });
+
+      it('src=/foo should not match an element with a src of "/bar/foo?bar"', function () {
+        const i = new Identifier('src', '/foo');
+        const iframe = makeElement('<iframe src="/bar/foo?bar"></iframe>');
+        assert.isFalse(i.match(iframe));
       });
 
       it('src=foo should not match an element with a src of "/bar"', function () {

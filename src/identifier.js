@@ -1,6 +1,24 @@
 import toArray from './toArray';
 const getBoundingClientRect = 'getBoundingClientRect';
 
+function extractPath(href) {
+  const a = document.createElement('a');
+  a.href = href || '';
+  // in older IE's they don't parse urls correctly without a scheme
+  if (a.pathname === '' && typeof href === 'string' && href.substr(0, 1) === '/') {
+    // check to see if the href starts with // or if it has no scheme at all
+    if (href.substr(0, 2) === '//') {
+      a.href = 'http:' + href;
+    } else {
+      a.href = 'http://example.com' + href;
+    }
+  }
+  if (typeof a.pathname === 'string' && a.pathname.substr(0, 1) !== '/') {
+    return '/' + a.pathname;
+  }
+  return a.pathname || '';
+}
+
 function matchVal(val, match) {
   if (typeof val !== 'string') {
     if (typeof val === 'number') {
@@ -15,6 +33,19 @@ function matchVal(val, match) {
 }
 
 function matchProp(el, prop, match) {
+  // className is special since its multiple values joined with space
+  if (prop === 'className') {
+    const vals = ((el && el[prop]) || '').split(' ');
+    for (let i = 0; i < vals.length; i++) {
+      if (vals[i] && matchVal(vals[i], match)) {
+        return true;
+      }
+    }
+    return false;
+  // we want to treat url matches starting with / as special path-only matches
+  } else if ((prop === 'src' || prop === 'href') && match.substr(0, 1) === '/') {
+    return matchVal(extractPath((el && el[prop]) || ''), match);
+  }
   return el && matchVal(el[prop], match);
 }
 

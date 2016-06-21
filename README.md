@@ -14,6 +14,12 @@ identifiers. A collection of identifiers is called a rule.
 * `ppid`: matches the id of any of the parents
 * `w`: matches the width of the element
 * `h`: matches the height of the element
+* `src`: matches the src property of the element
+
+### Caveats ###
+
+* `cl=foo` will match an element as long as one of the classes is `foo`.
+* `src=/foo` will match any url with a path of `/foo`
 
 ## Parsing Rules ##
 
