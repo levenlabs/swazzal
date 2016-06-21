@@ -447,6 +447,12 @@ describe('Identifier', function() {
         assert.isTrue(i.match(div));
       });
 
+      it('w=100px should match an element with a width of 100px', function () {
+        const i = new Identifier('w', '100px');
+        const div = makeElement('<div style="width: 100px; height: 1px; display: block;"></div>');
+        assert.isTrue(i.match(div));
+      });
+
       it('w=100 should not match an element with a width of 101px', function () {
         const i = new Identifier('w', '100');
         const div = makeElement('<div style="width: 101px; height: 1px; display: block;"></div>');
@@ -469,6 +475,12 @@ describe('Identifier', function() {
 
       it('h=100 should match an element with a height of 100px', function () {
         const i = new Identifier('h', '100');
+        const div = makeElement('<div style="height: 100px; width: 1px; display: block;"></div>');
+        assert.isTrue(i.match(div));
+      });
+
+      it('h=100px should match an element with a height of 100px', function () {
+        const i = new Identifier('h', '100px');
         const div = makeElement('<div style="height: 100px; width: 1px; display: block;"></div>');
         assert.isTrue(i.match(div));
       });

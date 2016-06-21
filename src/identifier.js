@@ -18,6 +18,14 @@ function matchProp(el, prop, match) {
   return el && matchVal(el[prop], match);
 }
 
+function trimPx(str) {
+  const i = str.lastIndexOf('px');
+  if (i > -1) {
+    return str.substring(0, i);
+  }
+  return str;
+}
+
 export default class Identifier {
   constructor(property, value) {
     this.property = property || '';
@@ -38,6 +46,7 @@ export default class Identifier {
   match(el) {
     const parents = this.property.substr(0, 2) === 'pp';
     const parent = this.property.substr(0, 1) === 'p' && !parents;
+    const value = this.value;
     let prop = '';
     switch (this.property) {
       case 'ppid':
@@ -58,14 +67,14 @@ export default class Identifier {
         break;
       case 'w':
         if (el && typeof el[getBoundingClientRect] === 'function') {
-          return el[getBoundingClientRect]().width === parseInt(this.value, 10);
+          return el[getBoundingClientRect]().width === parseInt(trimPx(value), 10);
         } else {
           prop = 'clientWidth';
         }
         break;
       case 'h':
         if (el && typeof el[getBoundingClientRect] === 'function') {
-          return el[getBoundingClientRect]().height === parseInt(this.value, 10);
+          return el[getBoundingClientRect]().height === parseInt(trimPx(value), 10);
         } else {
           prop = 'clientHeight';
         }
@@ -76,7 +85,7 @@ export default class Identifier {
     if (parents || parent) {
       const p = el && el.parentElement;
       if (p && p !== el) {
-        if (matchProp(p, prop, this.value)) {
+        if (matchProp(p, prop, value)) {
           return true;
         }
         if (parents) {
@@ -85,7 +94,7 @@ export default class Identifier {
       }
       return false;
     }
-    return matchProp(el, prop, this.value);
+    return matchProp(el, prop, value);
   }
 
   roots(parent) {
