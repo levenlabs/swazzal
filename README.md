@@ -55,5 +55,5 @@ You can also match specific elements to a rule.
 
 ## Supported Browsers ##
 
-Automated testing for Chrome, Firefox, IE6+, Safari will be included soon via
-BrowserStack. Right now these tests need to be run manually before committing.
+Automated testing for Chrome, Firefox, IE6+, Safari is provided via
+[BrowserStack](https://www.browserstack.com/).

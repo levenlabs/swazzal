@@ -1,7 +1,12 @@
 language: node_js
 node_js:
   - stable
-  - 0.12
-  - v5
+  - "0.12"
+  - "6"
+script:
+  - npm run testall
 notifications:
   email: false
+env:
+  global:
+    secure: Bs89uaAq93LLWeHToZTE7Bo0JoTpA3fB2lItKbwwnxWExxM8BAOZ+EC4779YMwHkmyjlTzCKmAxW5jiZoue0iBRSHefHpEePWvF+th5mMSVhqGvNVdOZOyHzPXjzpp2BcKd233Fp8tR8C6yX/ppDJwNT5AYhRPEK/Z8M1JpSxKOGTH1klDZ1RDjVWAV7cKhs4AgcaVNmiR1GaEO7MKUG5Fc2YOriNudqRPFuDiNYwyprvn0o4zf78RfuhQp4+Cyl2Pfbyp86dhVQSSRPg7mXSomcJCkVpu9Bn3h9PpJtMcTbAuSW7GREikuT9ziQHobC2xzn7THxPpufH4zuD7tqJjRJpKKfZRuB8Q7T156xmo+/GuuzCjmwc0s29m1m0OUoGo+NHaDczTMFN9GDfxd4YUI7YwVpiLYk7a7m+/6yjSwyXmPOsjImojGf4c/wpZZ+/caQmFT3gNtMKLtX/LO2GQIOcLGK5AaNBPIUMpyoKHAYlSEhhzsJ9WhHOP5nB/IrhOwgYUeYfrETL0QVyyiQmJxw1Dgt9H+u4CtAH0+GGkcpwiJs2WB/029K+HBUOcItv12q20/xqGJWF9mHDcxr69ZQ8KbyTKwGjyA4YuVN5er7Y6SO8ECfQCSOLg97enE9HnawGcrXhPMjsWd6/wMt+l/UW9i4sSkX59OjG29/AN4=
