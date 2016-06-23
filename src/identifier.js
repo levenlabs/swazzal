@@ -33,13 +33,16 @@ function matchVal(val, match) {
 }
 
 function matchProp(el, prop, match) {
-  if (!el || typeof el.getAttribute !== 'function') {
+  // getAttribute is an "object" in <IE8
+  if (!el || typeof el.getAttribute === 'undefined') {
     return false;
   }
   // class is special since its multiple values joined with space
   // we need to use getAttribute instead of standard el[prop] because of svg
+  // but IE doesn't support getting class with getAttribute so we fallback to
+  // className
   if (prop === 'class') {
-    const val = (el.getAttribute(prop) || '');
+    const val = (el.getAttribute(prop) || el.className || '');
     if (typeof val !== 'string') {
       return false;
     }
@@ -52,7 +55,7 @@ function matchProp(el, prop, match) {
     return false;
   // we want to treat url matches starting with / as special path-only matches
   } else if ((prop === 'src' || prop === 'href') && match.substr(0, 1) === '/') {
-    return matchVal(extractPath(el.getAttribute(prop) || ''), match);
+    return matchVal(extractPath(el.getAttribute(prop) || el[prop] || ''), match);
   }
   return matchVal(el[prop], match);
 }
@@ -158,7 +161,8 @@ export default class Identifier {
         if (!this.wildcard) {
           fnName = 'getElementsByClassName';
           if (typeof parent[fnName] !== 'function') {
-            if (typeof document.querySelectorAll === 'function') {
+            // querySelectorAll is "object" in <IE8
+            if (typeof document.querySelectorAll !== 'undefined') {
               return toArray(document.querySelectorAll('.' + this.value));
             }
             return [parent];

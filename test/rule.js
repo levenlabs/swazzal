@@ -67,7 +67,7 @@ describe('Rule', function() {
     });
 
     // only run these tests in ie8+
-    if (typeof document.querySelectorAll === 'function') {
+    if (typeof document.querySelectorAll !== 'undefined') {
       it('roots for cl=foo should return all elements with class foo', function () {
         const el = makeElement('<div class="foo"></div><div class="foo"></div>');
         const i = new Identifier('cl', 'foo');

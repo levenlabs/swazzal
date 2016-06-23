@@ -1,6 +1,5 @@
 import Rule from './rule';
 import Identifier from './identifier';
-const _string_ = 'string';
 
 export default function parse(str) {
   const idenStrings = str.split(';');
@@ -8,7 +7,7 @@ export default function parse(str) {
   let iParts = null;
   for (let i = 0; i < idenStrings.length; i++) {
     iParts = idenStrings[i].split('=');
-    if (typeof iParts[0] !== _string_ || typeof iParts[1] !== _string_) {
+    if (typeof iParts[0] !== 'string' || typeof iParts[1] !== 'string') {
       continue;
     }
     // we need to account for there possibly being an = in the value

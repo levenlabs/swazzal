@@ -46,7 +46,7 @@ describe('Identifier', function() {
     });
 
     // only run these tests in ie8+
-    if (typeof document.querySelectorAll === 'function') {
+    if (typeof document.querySelectorAll !== 'undefined') {
       it('roots for cl=bar should return the parent with class bar', function () {
         const i = new Identifier('cl', 'bar');
         const div = makeElement('<div class="bar"></div>');
@@ -293,13 +293,19 @@ describe('Identifier', function() {
       it('cl=foo should match an svg element with class "foo bar"', function () {
         const i = new Identifier('cl', 'foo');
         const svg = makeElement('<svg version="1.1" width="100" height="100" xmlns="http://www.w3.org/2000/svg" class="foo bar"><circle cx="10" cy="10" r="10" /></svg>');
-        assert.isTrue(i.match(svg));
+        // only test if svg's are supported
+        if (svg) {
+          assert.isTrue(i.match(svg));
+        }
       });
 
       it('cl=~foo should match an svg element with class "foobar"', function () {
         const i = new Identifier('cl', '~foo');
         const svg = makeElement('<svg version="1.1" width="100" height="100" xmlns="http://www.w3.org/2000/svg" class="foobar"><circle cx="10" cy="10" r="10" /></svg>');
-        assert.isTrue(i.match(svg));
+        // only test if svg's are supported
+        if (svg) {
+          assert.isTrue(i.match(svg));
+        }
       });
 
     });
