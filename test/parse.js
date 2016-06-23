@@ -20,4 +20,11 @@ describe('parse', function() {
     assert.equal(rule.identifiers[1].value, 'bar');
   });
 
+  it('should correctly parse div:id=fo=o', function () {
+    const rule = parse('id=fo=o');
+    assert.lengthOf(rule.identifiers, 1);
+    assert.equal(rule.identifiers[0].property, 'id');
+    assert.equal(rule.identifiers[0].value, 'fo=o');
+  });
+
 });
