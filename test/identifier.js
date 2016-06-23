@@ -439,57 +439,57 @@ describe('Identifier', function() {
 
     describe('src', function () {
 
-      it('src=/foo should match an element with a src of "/foo"', function () {
-        const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="/foo"></iframe>');
+      it('src=/base/foo.html should match an element with a src of "/base/foo.html"', function () {
+        const i = new Identifier('src', '/base/foo.html');
+        const iframe = makeElement('<iframe src="/base/foo.html"></iframe>');
         assert.isTrue(i.match(iframe));
       });
 
-      it('src=/foo should match an element with a src of "//localhost/foo"', function () {
-        const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="//localhost/foo"></iframe>');
+      it('src=/base/foo.html should match an element with a src of "//localhost:9876/base/foo.html"', function () {
+        const i = new Identifier('src', '/base/foo.html');
+        const iframe = makeElement('<iframe src="//localhost:9876/base/foo.html"></iframe>');
         assert.isTrue(i.match(iframe));
       });
 
-
-      it('src=/foo should match an element with a src of "http://localhost/foo"', function () {
-        const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="http://localhost/foo"></iframe>');
+      it('src=/base/foo.html should match an element with a src of "http://localhost:9876/base/foo.html"', function () {
+        const i = new Identifier('src', '/base/foo.html');
+        const iframe = makeElement('<iframe src="http://localhost:9876/base/foo.html"></iframe>');
         assert.isTrue(i.match(iframe));
       });
-      it('src=/foo should not match an element with a src of "/bar/foo"', function () {
+
+      it('src=/foo should not match an element with a src of "/base/foo.html"', function () {
         const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="/bar/foo"></iframe>');
+        const iframe = makeElement('<iframe src="/base/foo.html"></iframe>');
         assert.isFalse(i.match(iframe));
       });
 
-      it('src=/foo should match an element with a src of "/foo?bar"', function () {
-        const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="/foo?bar"></iframe>');
+      it('src=/base/foo.html should match an element with a src of "/base/foo.html?bar"', function () {
+        const i = new Identifier('src', '/base/foo.html');
+        const iframe = makeElement('<iframe src="/base/foo.html?bar"></iframe>');
         assert.isTrue(i.match(iframe));
       });
 
-      it('src=/foo should not match an element with a src of "/bar/foo?bar"', function () {
-        const i = new Identifier('src', '/foo');
-        const iframe = makeElement('<iframe src="/bar/foo?bar"></iframe>');
+      it('src=/foo.html should not match an element with a src of "/base/foo.html?bar"', function () {
+        const i = new Identifier('src', '/foo.html');
+        const iframe = makeElement('<iframe src="/base/foo.html?bar"></iframe>');
         assert.isFalse(i.match(iframe));
       });
 
-      it('src=foo should not match an element with a src of "/bar"', function () {
-        const i = new Identifier('src', 'foo');
-        const iframe = makeElement('<iframe src="/bar"></iframe>');
+      it('src=bar should not match an element with a src of "/base/bar.html"', function () {
+        const i = new Identifier('src', 'bar');
+        const iframe = makeElement('<iframe src="/base/bar.html"></iframe>');
         assert.isFalse(i.match(iframe));
       });
 
-      it('src=~foo should match an element with a src of "/foobar"', function () {
+      it('src=~foo should match an element with a src of "/base/foo.html"', function () {
         const i = new Identifier('src', '~foo');
-        const iframe = makeElement('<iframe src="/foobar"></iframe>');
+        const iframe = makeElement('<iframe src="/base/foo.html"></iframe>');
         assert.isTrue(i.match(iframe));
       });
 
-      it('src=~foo should not match an element with a src of "/bar"', function () {
+      it('src=~foo should not match an element with a src of "/base/bar.html"', function () {
         const i = new Identifier('src', '~foo');
-        const iframe = makeElement('<iframe src="/bar"></iframe>');
+        const iframe = makeElement('<iframe src="/base/bar.html"></iframe>');
         assert.isFalse(i.match(iframe));
       });
 

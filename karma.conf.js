@@ -11,7 +11,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: 'test/static',
 
 
     // frameworks to use
@@ -21,7 +21,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/index.js'
+      '../index.js',
+      { pattern: '**', watched: false, included: false, served: true }
     ],
 
 
@@ -32,7 +33,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/index.js': ['webpack'] // , 'sourcemap'
+      '../index.js': ['webpack'] // , 'sourcemap'
     },
 
     webpack: require('./webpack.config.js'),
