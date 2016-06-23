@@ -3,15 +3,16 @@ const getBoundingClientRect = 'getBoundingClientRect';
 
 function extractPath(href) {
   const a = document.createElement('a');
-  a.href = href || '';
   // in older IE's they don't parse urls correctly without a scheme
-  if (a.pathname === '' && typeof href === 'string' && href.substr(0, 1) === '/') {
+  if (typeof href === 'string' && href.substr(0, 1) === '/') {
     // check to see if the href starts with // or if it has no scheme at all
     if (href.substr(0, 2) === '//') {
       a.href = 'http:' + href;
     } else {
       a.href = 'http://example.com' + href;
     }
+  } else {
+    a.href = href || '';
   }
   if (typeof a.pathname === 'string' && a.pathname.substr(0, 1) !== '/') {
     return '/' + a.pathname;
