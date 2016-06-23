@@ -33,9 +33,17 @@ function matchVal(val, match) {
 }
 
 function matchProp(el, prop, match) {
-  // className is special since its multiple values joined with space
-  if (prop === 'className') {
-    const vals = ((el && el[prop]) || '').split(' ');
+  if (!el || typeof el.getAttribute !== 'function') {
+    return false;
+  }
+  // class is special since its multiple values joined with space
+  // we need to use getAttribute instead of standard el[prop] because of svg
+  if (prop === 'class') {
+    const val = (el.getAttribute(prop) || '');
+    if (typeof val !== 'string') {
+      return false;
+    }
+    const vals = val.split(' ');
     for (let i = 0; i < vals.length; i++) {
       if (vals[i] && matchVal(vals[i], match)) {
         return true;
@@ -44,9 +52,9 @@ function matchProp(el, prop, match) {
     return false;
   // we want to treat url matches starting with / as special path-only matches
   } else if ((prop === 'src' || prop === 'href') && match.substr(0, 1) === '/') {
-    return matchVal(extractPath((el && el[prop]) || ''), match);
+    return matchVal(extractPath(el.getAttribute(prop) || ''), match);
   }
-  return el && matchVal(el[prop], match);
+  return matchVal(el[prop], match);
 }
 
 function trimPx(str) {
@@ -79,6 +87,9 @@ export default class Identifier {
     const parent = this.property.substr(0, 1) === 'p' && !parents;
     const value = this.value;
     let prop = '';
+    if (!el) {
+      return false;
+    }
     switch (this.property) {
       case 'ppid':
       case 'pid':
@@ -88,7 +99,7 @@ export default class Identifier {
       case 'ppcl':
       case 'pcl':
       case 'cl':
-        prop = 'className';
+        prop = 'class';
         break;
       case 'src':
         prop = 'src';
