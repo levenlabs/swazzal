@@ -1,4 +1,4 @@
-import unique from 'array-unique';
+import unique from './arrayUnique';
 import reduceParents from './reduceParents';
 
 function locateElements(rule, parent, includeAll) {
