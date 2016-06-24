@@ -37,6 +37,7 @@
     "mocha": "^2.5.3",
     "phantomjs-prebuilt": "^2.1.7",
     "promise-polyfill": "^5.2.1",
+    "socket.io": "1.4.7",
     "webpack": "^1.13.1"
   },
   "readmeFilename": "README.md",
