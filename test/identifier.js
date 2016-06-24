@@ -475,17 +475,21 @@ describe('Identifier', function() {
         assert.isFalse(i.match(iframe));
       });
 
-      it('src=/base/foo.html should not an element with a src of "data:text..."', function () {
-        const i = new Identifier('src', '/base/foo.html');
-        const iframe = makeElement('<iframe src="data:text/html;charset=utf-8,%3Chtml%3E%3Cbody%20style%3D%27background%3Atransparent%27%3E%3C%2Fbody%3E%3C%2Fhtml%3E"></iframe>');
-        assert.isFalse(i.match(iframe));
-      });
+      // detect ie9 and above
+      // in ie8 we cannot use data uri's in iframes
+      if (typeof Array.prototype.reduce === 'function') {
+        it('src=/base/foo.html should not an element with a src of "data:text..."', function () {
+          const i = new Identifier('src', '/base/foo.html');
+          const iframe = makeElement('<iframe src="data:text/html;charset=utf-8,%3Chtml%3E%3Cbody%20style%3D%27background%3Atransparent%27%3E%3C%2Fbody%3E%3C%2Fhtml%3E"></iframe>');
+          assert.isFalse(i.match(iframe));
+        });
 
-      it('src=~data: should an element with a src of "data:text..."', function () {
-        const i = new Identifier('src', '~data:');
-        const iframe = makeElement('<iframe src="data:text/html;charset=utf-8,%3Chtml%3E%3Cbody%20style%3D%27background%3Atransparent%27%3E%3C%2Fbody%3E%3C%2Fhtml%3E"></iframe>');
-        assert.isTrue(i.match(iframe));
-      });
+        it('src=~data: should an element with a src of "data:text..."', function () {
+          const i = new Identifier('src', '~data:');
+          const iframe = makeElement('<iframe src="data:text/html;charset=utf-8,%3Chtml%3E%3Cbody%20style%3D%27background%3Atransparent%27%3E%3C%2Fbody%3E%3C%2Fhtml%3E"></iframe>');
+          assert.isTrue(i.match(iframe));
+        });
+      }
 
       it('src=/base/foo.html should match an element with a src of "/base/foo.html?bar"', function () {
         const i = new Identifier('src', '/base/foo.html');
