@@ -19,6 +19,11 @@ function containsStd(parent, child) {
 }
 
 const contains = (function() {
+  if (typeof document === 'undefined') {
+    return function() {
+      return false;
+    };
+  }
   const e = document.createElement('div');
   if (typeof e.contains === 'function') {
     return containsStd;
