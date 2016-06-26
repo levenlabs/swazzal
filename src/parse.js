@@ -2,6 +2,9 @@ import Rule from './rule';
 import Identifier from './identifier';
 
 export default function parse(str) {
+  if (typeof str !== 'string') {
+    return null;
+  }
   const idenStrings = str.split(';');
   const identifiers = [];
   let iParts = null;

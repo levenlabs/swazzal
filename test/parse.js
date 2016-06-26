@@ -27,4 +27,14 @@ describe('parse', function() {
     assert.equal(rule.identifiers[0].value, 'fo=o');
   });
 
+  it('should return null on non-string', function () {
+    const rule = parse([]);
+    assert.equal(rule, null);
+  });
+
+  it('should return null on empty string', function () {
+    const rule = parse([]);
+    assert.equal(rule, null);
+  });
+
 });
