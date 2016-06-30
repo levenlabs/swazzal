@@ -37,6 +37,10 @@ In order to parse such a string, the exported `parse` function can be used.
     // or const parse = require('swazzal').parse;
     const rule = parse('id=foo');
 
+Additionally, if a tidle `~` is in front of `value` then `value` will be
+instead searched for in the matching property and not equaled to. For
+instance, `id=~foo` will match an element with `id="foo"` and `id="foobar"`.
+
 ## Locating Elements ##
 
     import { Identifier, Rule } from 'swazzal';
