@@ -4,7 +4,7 @@ import Identifier from './identifier';
 import parse from './parse';
 import reduceParents from './reduceParents';
 
-// note: we cannot use export here without breaking IE8
+// note: we cannot use export above without breaking IE8
 
 export {
   Rule,

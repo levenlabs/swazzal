@@ -104,6 +104,18 @@ describe('Rule', function() {
       assert.deepEqual(r.locateRoots(document), [document.documentElement]);
     });
 
+    it('roots for tag=iframe of an iframe should return the iframe document', function (done) {
+      const iframe = makeElement('<iframe src="/base/test.html"></iframe>');
+      const i = new Identifier('tag', 'body');
+      const r = new Rule([i]);
+      iframe.onload = function() {
+        const doc = (iframe.contentDocument || iframe.contentWindow.document);
+        assert.deepEqual(r.locateRoots(doc), [doc.body]);
+        done();
+      };
+      iframe.onerror = done;
+    });
+
   });
 
   describe('locateElements()', function () {

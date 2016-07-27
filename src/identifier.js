@@ -1,6 +1,17 @@
 import toArray from './toArray';
 const getBoundingClientRect = 'getBoundingClientRect';
 
+function getDocument(el) {
+  if (el.ownerDocument && el.ownerDocument.nodeType === 9) {
+    return el.ownerDocument;
+  }
+  let parent = el;
+  while (parent && parent.nodeType !== 9) {
+    parent = parent.parentNode;
+  }
+  return parent || null;
+}
+
 function extractPath(href) {
   const a = document.createElement('a');
   // in older IE's they don't parse urls correctly without a scheme
@@ -145,12 +156,13 @@ export default class Identifier {
 
   roots(parent) {
     let fnName = '';
+    const doc = getDocument(parent) || document;
     switch (this.property) {
       case 'ppid':
       case 'pid':
       case 'id':
         if (!this.wildcard) {
-          const el = document.getElementById(this.value);
+          const el = doc.getElementById(this.value);
           if (el) {
             return [el];
           }
@@ -163,8 +175,8 @@ export default class Identifier {
           fnName = 'getElementsByClassName';
           if (typeof parent[fnName] !== 'function') {
             // querySelectorAll is "object" in <IE8
-            if (typeof document.querySelectorAll !== 'undefined') {
-              return toArray(document.querySelectorAll('.' + this.value));
+            if (typeof doc.querySelectorAll !== 'undefined') {
+              return toArray(doc.querySelectorAll('.' + this.value));
             }
             return [parent];
           }
