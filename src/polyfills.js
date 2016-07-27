@@ -1,3 +1,6 @@
+const noop = function(){};
+const arr = [];
+
 // From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
 if (!Array.prototype.map) {
 
@@ -88,34 +91,38 @@ if (!Array.prototype.map) {
 }
 
 // From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
-if (!Array.prototype.reduce) {
+// Older versions of prototype overwrite reduce with some not-reduce-at-all method
+// so we detect that in here and fallback if it isn't correct
+const arrayReduce = function(arr, callback, initialValue) {
+  if (typeof Array.prototype.reduce === 'function' && arr.reduce(noop, arr) === arr) {
+    return Array.prototype.reduce.call(arr, callback, initialValue);
+  }
+  if (arr == null) {
+    throw new TypeError('Array.prototype.reduce called on null or undefined');
+  }
+  if (typeof callback !== 'function') {
+    throw new TypeError(callback + ' is not a function');
+  }
+  var t = Object(arr), len = t.length >>> 0, k = 0, value;
+  if (arguments.length == 3) {
+    value = arguments[2];
+  } else {
+    while (k < len && !(k in t)) {
+      k++;
+    }
+    if (k >= len) {
+      throw new TypeError('Reduce of empty array with no initial value');
+    }
+    value = t[k++];
+  }
+  for (; k < len; k++) {
+    if (k in t) {
+      value = callback(value, t[k], k, t);
+    }
+  }
+  return value;
+};
 
-  Array.prototype.reduce = function(callback /*, initialValue*/) {
-    'use strict';
-    if (this == null) {
-      throw new TypeError('Array.prototype.reduce called on null or undefined');
-    }
-    if (typeof callback !== 'function') {
-      throw new TypeError(callback + ' is not a function');
-    }
-    var t = Object(this), len = t.length >>> 0, k = 0, value;
-    if (arguments.length == 2) {
-      value = arguments[1];
-    } else {
-      while (k < len && !(k in t)) {
-        k++;
-      }
-      if (k >= len) {
-        throw new TypeError('Reduce of empty array with no initial value');
-      }
-      value = t[k++];
-    }
-    for (; k < len; k++) {
-      if (k in t) {
-        value = callback(value, t[k], k, t);
-      }
-    }
-    return value;
-  };
-
-}
+export {
+  arrayReduce
+};

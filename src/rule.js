@@ -1,4 +1,5 @@
 import unique from './arrayUnique';
+import { arrayReduce } from './polyfills';
 import reduceParents from './reduceParents';
 
 function locateElements(rule, parent, includeAll) {
@@ -29,7 +30,7 @@ function locateElements(rule, parent, includeAll) {
   };
 
   // first we loop over the roots
-  return unique(roots.reduce((els, root) => {
+  return unique(arrayReduce(roots, (els, root) => {
     const rootMatch = rule.match(root);
     if (rootMatch) {
       els.push(root);
@@ -60,9 +61,9 @@ export default class Rule {
     if (parent.nodeType === 9) {
       parentElement = parent.documentElement;
     }
-    const roots = unique(this.identifiers.reduce((r, i) => r.concat(i.roots(parentElement)), []));
+    const roots = unique(arrayReduce(this.identifiers, (r, i) => r.concat(i.roots(parentElement)), []));
     // if any of the roots are parents of another, we remove non parents
-    return roots.reduce(reduceParents, []);
+    return arrayReduce(roots, reduceParents, []);
   }
 
   match(el) {
