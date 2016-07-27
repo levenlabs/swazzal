@@ -1,5 +1,5 @@
 const noop = function(){};
-const arr = [];
+const emptyArr = [];
 
 // From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
 if (!Array.prototype.map) {
@@ -94,7 +94,7 @@ if (!Array.prototype.map) {
 // Older versions of prototype overwrite reduce with some not-reduce-at-all method
 // so we detect that in here and fallback if it isn't correct
 const arrayReduce = function(arr, callback, initialValue) {
-  if (typeof Array.prototype.reduce === 'function' && arr.reduce(noop, arr) === arr) {
+  if (typeof Array.prototype.reduce === 'function' && emptyArr.reduce(noop, emptyArr) === emptyArr) {
     return Array.prototype.reduce.call(arr, callback, initialValue);
   }
   if (arr == null) {

@@ -57,12 +57,16 @@ describe('Identifier', function() {
     it('roots for id=test of an iframe should return the iframe document', function (done) {
       const iframe = makeElement('<p id="test"></p><iframe id="ifame" src="/base/test.html"></iframe>', 'ifame');
       const i = new Identifier('id', 'test');
-      iframe.onload = function() {
+      function onload() {
         const doc = (iframe.contentDocument || iframe.contentWindow.document);
         assert.deepEqual(i.roots(doc.body), [doc.getElementById('test')]);
         done();
       };
-      iframe.onerror = done;
+      if (iframe.attachEvent) {
+        iframe.attachEvent('onload', onload, false);
+      } else {
+        iframe.onload = onload;
+      }
     });
 
   });

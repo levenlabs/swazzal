@@ -108,12 +108,16 @@ describe('Rule', function() {
       const iframe = makeElement('<iframe src="/base/test.html"></iframe>');
       const i = new Identifier('tag', 'body');
       const r = new Rule([i]);
-      iframe.onload = function() {
+      function onload() {
         const doc = (iframe.contentDocument || iframe.contentWindow.document);
         assert.deepEqual(r.locateRoots(doc), [doc.body]);
         done();
       };
-      iframe.onerror = done;
+      if (iframe.attachEvent) {
+        iframe.attachEvent('onload', onload, false);
+      } else {
+        iframe.onload = onload;
+      }
     });
 
   });
