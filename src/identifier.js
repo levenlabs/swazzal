@@ -2,11 +2,13 @@ import toArray from './toArray';
 const getBoundingClientRect = 'getBoundingClientRect';
 
 function getDocument(el) {
-  if (el.ownerDocument && el.ownerDocument.nodeType === 9) {
+  if (el && el.ownerDocument && el.ownerDocument.nodeType === 9) {
     return el.ownerDocument;
   }
   let parent = el;
-  while (parent && parent.nodeType !== 9) {
+  // prevent it from infinite looping
+  let i = 250;
+  while (parent && parent.nodeType !== 9 && i-- > 0) {
     parent = parent.parentNode;
   }
   return parent || null;
@@ -156,7 +158,10 @@ export default class Identifier {
 
   roots(parent) {
     let fnName = '';
-    const doc = getDocument(parent) || document;
+    const doc = parent ? (getDocument(parent) || document) : null;
+    if (!doc) {
+      return [];
+    }
     switch (this.property) {
       case 'ppid':
       case 'pid':

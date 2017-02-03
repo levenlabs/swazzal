@@ -54,6 +54,9 @@ export default class Rule {
   }
 
   locateRoots(parent) {
+    if (!parent) {
+      return [];
+    }
     // build an array of all the possible roots from the identifiers
     // todo: a better way of doing this would be to only take roots that are
     // returned from ALL the identifiers

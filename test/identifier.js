@@ -69,6 +69,18 @@ describe('Identifier', function() {
       }
     });
 
+    it('roots for id=bar with no el document should return [el]', function () {
+      const el = document.createElement('div');
+      el.id = 'bar';
+      const i = new Identifier('id', 'bar');
+      assert.deepEqual(i.roots(el), [el]);
+    });
+
+    it('roots for null return []', function () {
+      const i = new Identifier('id', 'bar');
+      assert.deepEqual(i.roots(null), []);
+    });
+
   });
 
   describe('match()', function () {

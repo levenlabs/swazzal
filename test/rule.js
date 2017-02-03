@@ -120,6 +120,20 @@ describe('Rule', function() {
       }
     });
 
+    it('roots for id=bar with no el document should return [el]', function () {
+      const el = document.createElement('div');
+      el.id = 'bar';
+      const i = new Identifier('id', 'bar');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateRoots(el), [el]);
+    });
+
+    it('roots for null return []', function () {
+      const i = new Identifier('id', 'bar');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateRoots(null), []);
+    });
+
   });
 
   describe('locateElements()', function () {
@@ -214,6 +228,21 @@ describe('Rule', function() {
       const i2 = new Identifier('tag', 'div');
       const r = new Rule([i, i2]);
       assert.deepEqual(r.locateElements(document), [el]);
+    });
+
+    it('id=bar with no el document should return [el]', function () {
+      const el = document.createElement('div');
+      el.id = 'bar';
+      const i = new Identifier('id', 'bar');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateElements(el), [el]);
+      assert.deepEqual(r.locateElements(document), []);
+    });
+
+    it('elements of null return []', function () {
+      const i = new Identifier('id', 'bar');
+      const r = new Rule([i]);
+      assert.deepEqual(r.locateElements(null), []);
     });
 
   });
