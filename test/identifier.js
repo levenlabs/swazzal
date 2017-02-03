@@ -55,7 +55,10 @@ describe('Identifier', function() {
     }
 
     it('roots for id=test of an iframe should return the iframe document', function (done) {
-      const iframe = makeElement('<p id="test"></p><iframe id="ifame" src="/base/test.html"></iframe>', 'ifame');
+      makeElement('<p id="test"></p>');
+      const iframe = document.createElement('iframe');
+      iframe.src = '/base/test.html';
+      iframe.id = 'ifame';
       const i = new Identifier('id', 'test');
       function onload() {
         const doc = (iframe.contentDocument || iframe.contentWindow.document);
@@ -67,6 +70,7 @@ describe('Identifier', function() {
       } else {
         iframe.onload = onload;
       }
+      document.body.appendChild(iframe);
     });
 
     it('roots for id=bar with no el document should return [el]', function () {

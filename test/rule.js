@@ -105,7 +105,9 @@ describe('Rule', function() {
     });
 
     it('roots for tag=iframe of an iframe should return the iframe document', function (done) {
-      const iframe = makeElement('<iframe src="/base/test.html"></iframe>');
+      document.body.innerHTML = '';
+      const iframe = document.createElement('iframe');
+      iframe.src = "/base/test.html";
       const i = new Identifier('tag', 'body');
       const r = new Rule([i]);
       function onload() {
@@ -118,6 +120,7 @@ describe('Rule', function() {
       } else {
         iframe.onload = onload;
       }
+      document.body.appendChild(iframe);
     });
 
     it('roots for id=bar with no el document should return [el]', function () {
@@ -132,6 +135,25 @@ describe('Rule', function() {
       const i = new Identifier('id', 'bar');
       const r = new Rule([i]);
       assert.deepEqual(r.locateRoots(null), []);
+    });
+
+    it('roots for empty iframe return []', function (done) {
+      document.body.innerHTML = '';
+      const iframe = document.createElement('iframe');
+      const i = new Identifier('id', 'bar');
+      const r = new Rule([i]);
+      function onload() {
+        const doc = (iframe.contentDocument || iframe.contentWindow.document);
+        doc.removeChild(doc.documentElement);
+        assert.deepEqual(r.locateRoots(doc), []);
+        done();
+      };
+      if (iframe.attachEvent) {
+        iframe.attachEvent('onload', onload, false);
+      } else {
+        iframe.onload = onload;
+      }
+      document.body.appendChild(iframe);
     });
 
   });
