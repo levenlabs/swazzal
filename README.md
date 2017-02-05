@@ -6,6 +6,8 @@ identifiers. A collection of identifiers is called a rule.
 ## Supported Identifers ##
 
 * `tag`: matches the tagName of the element
+* `ptag`: matches the tagName of the direct parent
+* `pptag`: matches the tagName of any of the parents
 * `cl`: matches a class on the element
 * `pcl`: matches a class on the direct parent
 * `ppcl`: matches a class on any of the parents

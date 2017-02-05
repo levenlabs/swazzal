@@ -644,6 +644,104 @@ describe('Identifier', function() {
 
     });
 
+    /* //////////////////////////////////////////////////
+    PTAG
+    ////////////////////////////////////////////////// */
+
+    describe('ptag', function () {
+
+      it('ptag=div should match a p inside of a div', function () {
+        const i = new Identifier('ptag', 'div');
+        const p = makeElement('<div><p id="bar"></p></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('ptag=body should match a div in body', function () {
+        const i = new Identifier('ptag', 'body');
+        const div = makeElement('<div></div>', '');
+        assert.isTrue(i.match(div));
+      });
+
+      it('ptag=div should not match a div with no div parent', function () {
+        const i = new Identifier('ptag', 'div');
+        const div = makeElement('<div></div>');
+        assert.isFalse(i.match(div));
+      });
+
+      it('ptag=span should not match a div wrapping a p', function () {
+        const i = new Identifier('ptag', 'span');
+        const p = makeElement('<div><p id="bar"></p></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('ptag=div should not match a p wrapping a div', function () {
+        const i = new Identifier('ptag', 'div');
+        const p = makeElement('<p><div id="bar"></div></p>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('ptag=div should not match div that is 2 parents up', function () {
+        const i = new Identifier('ptag', 'div');
+        const span = makeElement('<div><p><span id="bar"></span></p></div>', 'bar');
+        assert.isFalse(i.match(span));
+      });
+
+      it('ptag=div should not break on document', function () {
+        const i = new Identifier('ptag', 'div');
+        assert.isFalse(i.match(document));
+      });
+
+    });
+
+    /* //////////////////////////////////////////////////
+    PPTAG
+    ////////////////////////////////////////////////// */
+
+    describe('pptag', function () {
+
+      it('pptag=div should match a p inside of a div', function () {
+        const i = new Identifier('pptag', 'div');
+        const p = makeElement('<div><p id="bar"></p></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('pptag=div should match a span inside of a p inside of a div', function () {
+        const i = new Identifier('pptag', 'div');
+        const span = makeElement('<div><p><span id="bar"></span></p></div>', 'bar');
+        assert.isTrue(i.match(span));
+      });
+
+      it('pptag=body should match a div in body', function () {
+        const i = new Identifier('pptag', 'body');
+        const div = makeElement('<div></div>', '');
+        assert.isTrue(i.match(div));
+      });
+
+      it('pptag=div should not match a div with no parent', function () {
+        const i = new Identifier('pptag', 'div');
+        const div = makeElement('<div></div>');
+        assert.isFalse(i.match(div));
+      });
+
+      it('pptag=span should not match a div wrapping a p', function () {
+        const i = new Identifier('pptag', 'span');
+        const p = makeElement('<div><p id="bar"></p></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('pptag=div should not match a p wrapping a div', function () {
+        const i = new Identifier('pptag', 'div');
+        const p = makeElement('<p><div id="bar"></div></p>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('pptag=div should not break on document', function () {
+        const i = new Identifier('pptag', 'div');
+        assert.isFalse(i.match(document));
+      });
+
+    });
+
   });
 
 });

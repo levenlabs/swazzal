@@ -121,6 +121,8 @@ export default class Identifier {
       case 'src':
         prop = 'src';
         break;
+      case 'pptag':
+      case 'ptag':
       case 'tag':
         prop = 'tagName';
         break;
@@ -187,6 +189,8 @@ export default class Identifier {
           }
         }
         break;
+      case 'pptag':
+      case 'ptag':
       case 'tag':
         if (!this.wildcard) {
           fnName = 'getElementsByTagName';
