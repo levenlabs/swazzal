@@ -1,6 +1,6 @@
 {
   "name": "swazzal",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Rules engine for detecting and matching elements",
   "repository": {
     "type": "git",
