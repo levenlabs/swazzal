@@ -17,6 +17,7 @@ identifiers. A collection of identifiers is called a rule.
 * `w`: matches the width of the element
 * `h`: matches the height of the element
 * `src`: matches the src property of the element
+* `vis`: matches the visiblility of the element `'true'/'false'`
 
 ### Caveats ###
 

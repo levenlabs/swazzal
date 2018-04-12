@@ -742,6 +742,103 @@ describe('Identifier', function() {
 
     });
 
+    /* //////////////////////////////////////////////////
+    VIS
+    ////////////////////////////////////////////////// */
+
+    describe('vis', function () {
+
+      it('vis=true should match a visible div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div></div>', '');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=false should match a display:none div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="display: none"></div>', '');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=true should not match a display:none div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="display: none"></div>', '');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=false should not match a display:block div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="display: block"></div>', '');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=false should match a visibility:hidden div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="visibility: hidden"></div>', '');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=false should match a parent display:none div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="display: none"><div id="bar"></div></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=false should match a parent visibility:hidden div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="visibility: hidden"><div id="bar"></div></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=true should not match a parent display:none div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="display: none"><div id="bar"></div></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=true should not match a parent visibility:hidden div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="visibility: hidden"><div id="bar"></div></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=false should match a parents display:none div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="display: none"><div style="display: block"><div id="bar"></div></div></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=false should match a parents visibility:hidden div', function () {
+        const i = new Identifier('vis', 'false');
+        const p = makeElement('<div style="visibility: hidden"><div style="display: block"><div id="bar"></div></div></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=true should not match a parents display:none div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="display: none"><div style="display: block"><div id="bar"></div></div></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=true should not match a parents visibility:hidden div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="visibility: hidden"><div style="display: block"><div id="bar"></div></div></div>', 'bar');
+        assert.isFalse(i.match(p));
+      });
+
+      it('vis=true should match a parents display:block div', function () {
+        const i = new Identifier('vis', 'true');
+        const p = makeElement('<div style="display: block"><div><div id="bar"></div></div></div>', 'bar');
+        assert.isTrue(i.match(p));
+      });
+
+      it('vis=true should not break on document', function () {
+        const i = new Identifier('vis', 'true');
+        assert.isTrue(i.match(document));
+      });
+
+    });
+
   });
 
 });
