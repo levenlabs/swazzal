@@ -1,9 +1,11 @@
 import toArray from './toArray';
 const getBoundingClientRect = 'getBoundingClientRect';
+const getComputedStyle = 'getComputedStyle';
+const ownerDocument = 'ownerDocument';
 
 function getDocument(el) {
-  if (el && el.ownerDocument && el.ownerDocument.nodeType === 9) {
-    return el.ownerDocument;
+  if (el && el[ownerDocument] && el[ownerDocument].nodeType === 9) {
+    return el[ownerDocument];
   }
   let parent = el;
   // prevent it from infinite looping
@@ -74,6 +76,24 @@ function matchProp(el, prop, match) {
   return matchVal(el[prop], match);
 }
 
+function getStyle(el) {
+  if (!el || el.nodeType !== 1) {
+    return {};
+  }
+  if (typeof window[getComputedStyle] === 'function') {
+    return window[getComputedStyle](el, null);
+  }
+  if (typeof el.currentStyle !== 'undefined') {
+    return el.currentStyle;
+  }
+  return el.style;
+}
+
+function matchVisible(el, match) {
+  const style = getStyle(el);
+  return (style.display !== 'none' && style.visibility !== 'hidden') === !!match;
+}
+
 function trimPx(str) {
   const i = str.lastIndexOf('px');
   if (i > -1) {
@@ -100,10 +120,16 @@ export default class Identifier {
   }
 
   match(el) {
-    const parents = this.property.substr(0, 2) === 'pp';
-    const parent = this.property.substr(0, 1) === 'p' && !parents;
     const value = this.value;
-    let prop = '';
+    let parents = this.property.substr(0, 2) === 'pp';
+    let parent = this.property.substr(0, 1) === 'p' && !parents;
+    let positiveCheck = true;
+    function propFn(prop) {
+      return function(el) {
+        return matchProp(el, prop, value);
+      }
+    }
+    let fn = null;
     if (!el) {
       return false;
     }
@@ -111,51 +137,74 @@ export default class Identifier {
       case 'ppid':
       case 'pid':
       case 'id':
-        prop = 'id';
+        fn = propFn('id');
         break;
       case 'ppcl':
       case 'pcl':
       case 'cl':
-        prop = 'class';
+        fn = propFn('class');
         break;
       case 'src':
-        prop = 'src';
+        fn = propFn('src');
         break;
       case 'pptag':
       case 'ptag':
       case 'tag':
-        prop = 'tagName';
+        fn = propFn('tagName');
         break;
       case 'w':
         if (el && typeof el[getBoundingClientRect] === 'function') {
           return el[getBoundingClientRect]().width === parseInt(trimPx(value), 10);
         } else {
-          prop = 'clientWidth';
+          fn = propFn('clientWidth');
         }
         break;
       case 'h':
         if (el && typeof el[getBoundingClientRect] === 'function') {
           return el[getBoundingClientRect]().height === parseInt(trimPx(value), 10);
         } else {
-          prop = 'clientHeight';
+          fn = propFn('clientHeight');
         }
+        break;
+      case 'vis':
+        fn = function(el) {
+          return matchVisible(el, value == 'true');
+        };
+        // visiblity requires all of the parents and el to be visible
+        // invsibility requires 1 parent or el to be invisible
+        positiveCheck = value != 'true';
+        // check el
+        // if value is false, then we want to verify that we're not visible
+        // if value is true, then we want to verify that we're visible
+        if (positiveCheck === fn(el)) {
+          return positiveCheck;
+        }
+        // if we want to know if the element is visible, it's not enough to check this element
+        // we have to ensure the parents are too
+        parents = true;
         break;
       default:
         return false;
     }
     if (parents || parent) {
-      const p = el && el.parentElement;
-      if (p && p !== el) {
-        if (matchProp(p, prop, value)) {
-          return true;
+      let last = el;
+      let p = null;
+      while ((p = last && last.parentElement) && p !== last) {
+        const res = fn(p);
+        // if res is true and positiveCheck is true
+        // or res is false and positiveCheck is false
+        if (res === positiveCheck) {
+          return res;
         }
-        if (parents) {
-          return this.match(p);
+        // stop after one parent if we're not looking for multiple parents
+        if (!parents) {
+          break;
         }
+        last = p;
       }
-      return false;
+      return !positiveCheck;
     }
-    return matchProp(el, prop, value);
+    return fn(el);
   }
 
   roots(parent) {
