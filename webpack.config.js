@@ -2,9 +2,6 @@ var webpack = require('webpack');
 var config = {
   //devtool: 'inline-source-map',
   plugins: [
-    new webpack.ProvidePlugin({
-      Promise: 'promise-polyfill'
-    }),
     new webpack.NoErrorsPlugin(),
     /*new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -15,10 +12,6 @@ var config = {
       }
     })*/
   ],
-  node: {
-    // only promise-polyfill uses setImmediate and it uses its own polyfill
-    setImmediate: false
-  },
   module: {
     loaders: [
       {

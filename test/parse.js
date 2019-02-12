@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 import { assert } from 'assertive-chai';
-import { parse } from '../src';
+import { parse } from '../src/browsers';
 
 describe('parse', function() {
 

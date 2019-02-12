@@ -1,4 +1,3 @@
-import toArray from './toArray';
 const getBoundingClientRect = 'getBoundingClientRect';
 const getComputedStyle = 'getComputedStyle';
 const ownerDocument = 'ownerDocument';
@@ -232,7 +231,7 @@ export default class Identifier {
           if (typeof parent[fnName] !== 'function') {
             // querySelectorAll is "object" in <IE8
             if (typeof doc.querySelectorAll !== 'undefined') {
-              return toArray(doc.querySelectorAll('.' + this.value));
+              return Array.from(doc.querySelectorAll('.' + this.value));
             }
             return [parent];
           }
@@ -248,7 +247,7 @@ export default class Identifier {
       // todo: for w/h we should find the children of doc that are larger than w/h
     }
     if (fnName) {
-      return toArray(parent[fnName](this.value));
+      return Array.from(parent[fnName](this.value));
     }
     return [parent];
   }

@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 import { assert } from 'assertive-chai';
-import { Rule, Identifier } from '../src';
+import { Rule, Identifier } from '../src/browsers';
 
 describe('Rule', function() {
 

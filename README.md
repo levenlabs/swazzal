@@ -3,6 +3,11 @@
 Swazzal is a small library for identifying elements on the DOM using
 identifiers. A collection of identifiers is called a rule.
 
+## Importing ##
+
+If you need ES5 compatibility then you want to import `swazzal/lib/browsers.js`
+otherwise you can just import `swazzal`.
+
 ## Supported Identifers ##
 
 * `tag`: matches the tagName of the element

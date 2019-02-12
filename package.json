@@ -1,6 +1,6 @@
 {
   "name": "swazzal",
-  "version": "0.2.0",
+  "version": "1.0.0-pre",
   "description": "Rules engine for detecting and matching elements",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
     "testall": "karma start --single-run",
     "testwatch": "karma start --browsers PhantomJS"
   },
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "devDependencies": {
     "assertive-chai": "^2.0.2",
     "babel-cli": "^6.10.1",
@@ -35,7 +35,6 @@
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "mocha": "^2.5.3",
     "phantomjs-prebuilt": "^2.1.7",
-    "promise-polyfill": "^5.2.1",
     "webpack": "1.13.2"
   },
   "readmeFilename": "README.md",

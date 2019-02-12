@@ -1,6 +1,6 @@
 /* eslint-env node, mocha */
 import { assert } from 'assertive-chai';
-import { Identifier } from '../src';
+import { Identifier } from '../src/browsers';
 
 describe('Identifier', function() {
 
